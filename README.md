@@ -1,5 +1,23 @@
-# nysa's linux scripts
+```
+~\   \~~~~~~~~~~
+~~\ I \~~~~~~~~~
+~~~\ M \~~~~~~~~
+~~~~\ M \~~~~~~~
+~~~~~\ E \~~~~~~
+~~~~~~\ N \~~~~~
+~~~~~~~\ S \~~~~
+~~~~~~~~\ I \~~~
+~~~~~~~~~\ T \~~
+~~~~~~~~~~\ Y \~
+~~~~~~~~~~/ • /~
+~~~~~~~~~/ K /~~
+~~~~~~~~/ E /~~~
+~~~~~~~/ R /~~~~
+~~~~~~/ N /~~~~~
+~~~~~/ E /~~~~~~
+~~~~/ L /~~~~~~~
+~~~/   /~~~~~~~~
+```
+\\by-UtsavTheCunt\\
 
-I use these scripts on every single Linux env for developing.
-
-They're still in progress and probably useless.
+# based on nysa's linux scripts

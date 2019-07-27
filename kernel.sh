@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# We're building Acrux.
+# We're building IMMENSITY.
 cd ..
 
 # Export compiler type
@@ -15,7 +15,7 @@ fi
 # Export correct version
 if [[ "$@" =~ "beta"* ]]; then
 	export TYPE=beta
-	export VERSION="IMMENSITY-BETA${RELEASE_VERSION}-r${DRONE_BUILD_NUMBER}-${RELEASE_CODENAME}"
+	export VERSION="IMMENSITY-BETA-${RELEASE_VERSION}-r${DRONE_BUILD_NUMBER}-${RELEASE_CODENAME}"
 	# Be careful if something changes LOCALVERSION line
         sed -i "50s/.*/CONFIG_LOCALVERSION=\"-IMMENSITY-${RELEASE_VERSION}-r${DRONE_BUILD_NUMBER}-${RELEASE_CODENAME}\"/g" arch/arm64/configs/raphael_defconfig
 	export INC="$(echo ${RC} | grep -o -E '[0-9]+')"
@@ -37,15 +37,14 @@ if [[ -z "${KEBABS}" ]]; then
 fi
 
 # Post to CI channel
+curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/SendAnimation -d animation=https://thumbs.gfycat.com/TidyOccasionalIncatern-size_restricted.gif -d chat_id=${CI_CHANNEL_ID}
 curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Kernel: <code>IMMENSITY Kernel</code>
 Type: <code>${TYPE}</code>
 Device: <code>XiaoMi Redmi K20 Pro (raphael)</code>
 Compiler: <code>${COMPILER}</code>
 Branch: <code>$(git rev-parse --abbrev-ref HEAD)</code>
-Latest Commit: <code>$(git log --pretty=format:'%h : %s' -1)</code>
-Changelog: ${DRONE_REPO_LINK}/compare/$DRONE_COMMIT_BEFORE...$DRONE_COMMIT_AFTER
 <i>Build started on Drone Cloud...</i>
-Check the build status here: https://cloud.drone.io/nysadev/acrux/${DRONE_BUILD_NUMBER}" -d chat_id=${CI_CHANNEL_ID} -d parse_mode=HTML
+Check the build status here: https://cloud.drone.io/UtsavisGreat/android_kernel_xiaomi_sm8150/${DRONE_BUILD_NUMBER}" -d chat_id=${CI_CHANNEL_ID} -d parse_mode=HTML
 curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Build started for revision ${DRONE_BUILD_NUMBER}" -d chat_id=${CI_CHANNEL_ID} -d parse_mode=HTML
 
 # Make is shit so I have to pass thru some toolchains
