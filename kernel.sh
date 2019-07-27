@@ -5,7 +5,7 @@ cd ..
 
 # Export compiler type
 if [[ "$@" =~ "clang"* ]]; then
-	export COMPILER="Clang 9.x"
+	export COMPILER="Clang 9.0.5"
 elif [[ "$@" =~ "gcc10"* ]]; then
         export COMPILER="GCC 10 Experimental"
 else
@@ -15,17 +15,17 @@ fi
 # Export correct version
 if [[ "$@" =~ "beta"* ]]; then
 	export TYPE=beta
-	export VERSION="Acrux-BETA-${RELEASE_VERSION}-r${DRONE_BUILD_NUMBER}-${RELEASE_CODENAME}"
+	export VERSION="IMMENSITY-BETA${RELEASE_VERSION}-r${DRONE_BUILD_NUMBER}-${RELEASE_CODENAME}"
 	# Be careful if something changes LOCALVERSION line
-        sed -i "50s/.*/CONFIG_LOCALVERSION=\"-Acrux-${RELEASE_VERSION}-r${DRONE_BUILD_NUMBER}-${RELEASE_CODENAME}\"/g" arch/arm64/configs/acrux_defconfig
+        sed -i "50s/.*/CONFIG_LOCALVERSION=\"-IMMENSITY-${RELEASE_VERSION}-r${DRONE_BUILD_NUMBER}-${RELEASE_CODENAME}\"/g" arch/arm64/configs/raphael_defconfig
 	export INC="$(echo ${RC} | grep -o -E '[0-9]+')"
 	INC="$((INC + 1))"
 	sed -i "2s/.*/rc$INC/g" CURRENTVERSION
 else
 	export TYPE=stable
-	export VERSION="Acrux-Stable-${RELEASE_VERSION}-${RELEASE_CODENAME}"
+	export VERSION="IMMENSITY-STABLE-${RELEASE_VERSION}-${RELEASE_CODENAME}"
         # Be careful if something changes LOCALVERSION line
-        sed -i "50s/.*/CONFIG_LOCALVERSION=\"-Acrux-${RELEASE_VERSION}-${RELEASE_CODENAME}\"/g" arch/arm64/configs/acrux_defconfig
+        sed -i "50s/.*/CONFIG_LOCALVERSION=\"-IMMENSITY-${RELEASE_VERSION}-${RELEASE_CODENAME}\"/g" arch/arm64/configs/raphael_defconfig
 fi
 
 export ZIPNAME="${VERSION}.zip"
@@ -37,24 +37,24 @@ if [[ -z "${KEBABS}" ]]; then
 fi
 
 # Post to CI channel
-curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Kernel: <code>Acrux Kernel</code>
+curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Kernel: <code>IMMENSITY Kernel</code>
 Type: <code>${TYPE}</code>
-Device: <code>MI 8 Lite (platina)</code>
+Device: <code>XiaoMi Redmi K20 Pro (raphael)</code>
 Compiler: <code>${COMPILER}</code>
 Branch: <code>$(git rev-parse --abbrev-ref HEAD)</code>
 Latest Commit: <code>$(git log --pretty=format:'%h : %s' -1)</code>
 Changelog: ${DRONE_REPO_LINK}/compare/$DRONE_COMMIT_BEFORE...$DRONE_COMMIT_AFTER
 <i>Build started on Drone Cloud...</i>
 Check the build status here: https://cloud.drone.io/nysadev/acrux/${DRONE_BUILD_NUMBER}" -d chat_id=${CI_CHANNEL_ID} -d parse_mode=HTML
-curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Build started for revision ${DRONE_BUILD_NUMBER}" -d chat_id=${KERNEL_CHAT_ID} -d parse_mode=HTML
+curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Build started for revision ${DRONE_BUILD_NUMBER}" -d chat_id=${CI_CHANNEL_ID} -d parse_mode=HTML
 
 # Make is shit so I have to pass thru some toolchains
 # Let's build, anyway
 PATH="/drone/src/clang/bin:${PATH}"
 START=$(date +"%s")
-make O=out ARCH=arm64 acrux_defconfig
+make O=out ARCH=arm64 raphael_defconfig
 if [[ "$@" =~ "clang"* ]]; then
-        make -j${KEBABS} O=out ARCH=arm64 CC=clang CLANG_TRIPLE="aarch64-linux-gnu-" CROSS_COMPILE="/drone/src/gcc/bin/aarch64-linux-gnu-" CROSS_COMPILE_ARM32="/drone/src/gcc32/bin/arm-maestro-linux-gnueabi-"
+        make -j${KEBABS} O=out ARCH=arm64 CC=clang CLANG_TRIPLE="aarch64-linux-android-" CROSS_COMPILE="/drone/src/gcc/bin/aarch64-linux-android-"
 elif [[ "$@" =~ "gcc10"* ]]; then
 	make -j${KEBABS} O=out ARCH=arm64 CROSS_COMPILE="/drone/src/gcc/bin/aarch64-raphiel-elf-" CROSS_COMPILE_ARM32="/drone/src/gcc32/bin/arm-maestro-linux-gnueabi-"
 else
