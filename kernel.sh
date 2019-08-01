@@ -15,17 +15,12 @@ fi
 # Export correct version
 if [[ "$@" =~ "beta"* ]]; then
 	export TYPE=beta
-	export VERSION="IMMENSITY-BETA-${RELEASE_VERSION}-r${DRONE_BUILD_NUMBER}-${RELEASE_CODENAME}"
-	# Be careful if something changes LOCALVERSION line
-        sed -i "50s/.*/CONFIG_LOCALVERSION=\"-IMMENSITY-${RELEASE_VERSION}-r${DRONE_BUILD_NUMBER}-${RELEASE_CODENAME}\"/g" arch/arm64/configs/raphael_defconfig
+	export VERSION="IMMENSITY-BETA-${DRONE_BUILD_NUMBER}-${RELEASE_CODENAME}"
 	export INC="$(echo ${RC} | grep -o -E '[0-9]+')"
 	INC="$((INC + 1))"
-	sed -i "2s/.*/rc$INC/g" CURRENTVERSION
 else
 	export TYPE=stable
-	export VERSION="IMMENSITY-STABLE-${RELEASE_VERSION}-${RELEASE_CODENAME}"
-        # Be careful if something changes LOCALVERSION line
-        sed -i "50s/.*/CONFIG_LOCALVERSION=\"-IMMENSITY-${RELEASE_VERSION}-${RELEASE_CODENAME}\"/g" arch/arm64/configs/raphael_defconfig
+	export VERSION="IMMENSITY-STABLE-${RELEASE_CODENAME}"
 fi
 
 export ZIPNAME="${VERSION}.zip"
@@ -70,7 +65,7 @@ zip -r9 ${ZIPNAME} *
 CHECKER=$(ls -l ${ZIPNAME} | awk '{print $5}')
 
 if (($((CHECKER / 1048576)) > 5)); then
-	curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Build compiled successfully in $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds for Platina" -d chat_id=${CI_CHANNEL_ID} -d parse_mode=HTML
+	curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Kernel compiled successfully in $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds for Raphael" -d chat_id=${CI_CHANNEL_ID} -d parse_mode=HTML
 	curl -F chat_id="${CI_CHANNEL_ID}" -F document=@"$(pwd)/${ZIPNAME}" https://api.telegram.org/bot${BOT_API_KEY}/sendDocument
 else
 	curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Error in build!!" -d chat_id=${CI_CHANNEL_ID}
