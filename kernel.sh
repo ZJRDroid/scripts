@@ -6,8 +6,8 @@ cd ..
 # Export compiler type
 if [[ "$@" =~ "clang"* ]]; then
 	export COMPILER="Clang 9.0.5"
-elif [[ "$@" =~ "gcc10"* ]]; then
-        export COMPILER="GCC 10 Experimental"
+elif [[ "$@" =~ "dragon"* ]]; then
+        export COMPILER="DragonTC-10.0"
 else
 	export COMPILER="GCC 9.1 bare-metal"
 fi
@@ -49,8 +49,9 @@ START=$(date +"%s")
 make O=out ARCH=arm64 raphael_defconfig
 if [[ "$@" =~ "clang"* ]]; then
         make -j${KEBABS} O=out ARCH=arm64 CC=clang CLANG_TRIPLE="aarch64-linux-android-" CROSS_COMPILE="/drone/src/gcc/bin/aarch64-linux-android-"
-elif [[ "$@" =~ "gcc10"* ]]; then
-	make -j${KEBABS} O=out ARCH=arm64 CROSS_COMPILE="/drone/src/gcc/bin/aarch64-raphiel-elf-" CROSS_COMPILE_ARM32="/drone/src/gcc32/bin/arm-maestro-linux-gnueabi-"
+elif [[ "$@" =~ "dragon"* ]]; then
+	PATH="/drone/src/dragontc/bin:${PATH}"
+	make -j${KEBABS} O=out ARCH=arm64 CROSS_COMPILE="/drone/src/dragontc/bin/aarch64-linux-gnu-" CROSS_COMPILE_ARM32="/drone/src/dragontc/bin/arm-linux-gnueabi-"
 else
 	make -j${KEBABS} O=out ARCH=arm64 CROSS_COMPILE="/drone/src/gcc/bin/aarch64-elf-" CROSS_COMPILE_ARM32="/drone/src/gcc32/bin/arm-eabi-"
 fi
