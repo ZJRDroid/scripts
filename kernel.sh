@@ -48,7 +48,7 @@ PATH="/drone/src/clang/bin:${PATH}"
 START=$(date +"%s")
 make O=out ARCH=arm64 raphael_defconfig
 if [[ "$@" =~ "clang"* ]]; then
-        make -j${KEBABS} O=out ARCH=arm64 CC=clang CLANG_TRIPLE="aarch64-linux-android-" CROSS_COMPILE="/drone/src/gcc/bin/aarch64-linux-android-"
+        make -j${KEBABS} O=out ARCH=arm64 CC=clang CLANG_TRIPLE="aarch64-linux-android-" CROSS_COMPILE="/drone/src/gcc/bin/aarch64-linux-android-" CROSS_COMPILE_ARM32="/drone/src/gcc32/bin/arm-linux-androideabi-"
 elif [[ "$@" =~ "dragon"* ]]; then
 	PATH="/drone/src/dragontc/bin:${PATH}"
 	make -j${KEBABS} O=out ARCH=arm64 CROSS_COMPILE="/drone/src/dragontc/bin/aarch64-linux-gnu-" CROSS_COMPILE_ARM32="/drone/src/dragontc/bin/arm-linux-gnueabi-"
