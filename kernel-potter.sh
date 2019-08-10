@@ -39,7 +39,7 @@ Device: <code>Motorola Moto G5 Plus (potter)</code>
 Compiler: <code>${COMPILER}</code>
 Branch: <code>$(git rev-parse --abbrev-ref HEAD)</code>
 <i>Build started on Drone Cloud...</i>
-Check the build status here: https://cloud.drone.io/UtsavisGreat/android_kernel_xiaomi_sm8150/${DRONE_BUILD_NUMBER}" -d chat_id=${CI_CHANNEL_ID} -d parse_mode=HTML
+Check the build status here: https://cloud.drone.io/UtsavisGreat/immensity_kernel_motorola_msm8953/${DRONE_BUILD_NUMBER}" -d chat_id=${CI_CHANNEL_ID} -d parse_mode=HTML
 curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Build started for revision ${DRONE_BUILD_NUMBER}" -d chat_id=${CI_CHANNEL_ID} -d parse_mode=HTML
 
 # Make is shit so I have to pass thru some toolchains
