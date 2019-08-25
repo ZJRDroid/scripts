@@ -9,7 +9,7 @@ if [[ "$@" =~ "clang"* ]]; then
 elif [[ "$@" =~ "dragon"* ]]; then
         export COMPILER="DragonTC-10.0"
 else
-	export COMPILER="GCC 9.1 bare-metal"
+	export COMPILER="GCC 10.0"
 fi
 
 # Export correct version
@@ -53,7 +53,7 @@ elif [[ "$@" =~ "dragon"* ]]; then
 	PATH="/drone/src/dragontc/bin:${PATH}"
 	make -j${KEBABS} O=out ARCH=arm64 CROSS_COMPILE="/drone/src/dragontc/bin/aarch64-linux-gnu-" CROSS_COMPILE_ARM32="/drone/src/dragontc/bin/arm-linux-gnueabi-"
 else
-	make -j${KEBABS} O=out ARCH=arm64 CROSS_COMPILE="/drone/src/gcc/bin/aarch64-elf-" CROSS_COMPILE_ARM32="/drone/src/gcc32/bin/arm-eabi-"
+	make -j${KEBABS} O=out ARCH=arm64 CROSS_COMPILE="/drone/src/gcc/bin/aarch64-linux-gnu-" CROSS_COMPILE_ARM32="/drone/src/gcc32/bin/arm-maestro-linux-gnueabi-"
 fi
 END=$(date +"%s")
 DIFF=$(( END - START))
