@@ -5,7 +5,7 @@ cd ..
 
 # Export compiler type
 if [[ "$@" =~ "clang"* ]]; then
-	export COMPILER="Clang 9.0.5"
+	export COMPILER="Clang 9.0.6"
 elif [[ "$@" =~ "dragon"* ]]; then
         export COMPILER="DragonTC-10.0"
 else
@@ -15,12 +15,12 @@ fi
 # Export correct version
 if [[ "$@" =~ "beta"* ]]; then
 	export TYPE=beta
-	export VERSION="IMMENSITY-BETA-${DRONE_BUILD_NUMBER}-${RELEASE_CODENAME}"
+	export VERSION="IMMENSITY-BETA-KERNEL-${DRONE_BUILD_NUMBER}-${RELEASE_CODENAME}"
 	export INC="$(echo ${RC} | grep -o -E '[0-9]+')"
 	INC="$((INC + 1))"
 else
 	export TYPE=stable
-	export VERSION="IMMENSITY-STABLE-${RELEASE_CODENAME}"
+	export VERSION="IMMENSITY-KERNEL-STABLE-${RELEASE_CODENAME}"
 fi
 
 export ZIPNAME="${VERSION}.zip"
@@ -58,7 +58,11 @@ fi
 END=$(date +"%s")
 DIFF=$(( END - START))
 
-cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel
+cp $(pwd)/out/arch/arm64/boot/Image.gz $(pwd)/anykernel
+cp $(pwd)/out/arch/arm64/boot/dts/qcom/sm8150.dtb $(pwd)/anykernel/dtbs
+cp $(pwd)/out/arch/arm64/boot/dts/qcom/sm8150p.dtb $(pwd)/anykernel/dtbs
+cp $(pwd)/out/arch/arm64/boot/dts/qcom/sm8150-v2.dtb $(pwd)/anykernel/dtbs
+cp $(pwd)/out/arch/arm64/boot/dts/qcom/sm8150p-v2.dtb $(pwd)/anykernel/dtbs
 
 # POST ZIP OR FAILURE
 cd anykernel
