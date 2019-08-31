@@ -26,6 +26,7 @@ else
 fi
 
 export ZIPNAME="${VERSION}.zip"
+export DTB=$(pwd)/dtbtool
 
 # How much kebabs we need? Kanged from @raphielscape :)
 if [[ -z "${KEBABS}" ]]; then
@@ -59,10 +60,14 @@ elif [[ "$@" =~ "gcc9"* ]]; then
 else
 	make -j${KEBABS} O=out ARCH=arm64 CROSS_COMPILE="/drone/src/gcc/bin/aarch64-elf-" CROSS_COMPILE_ARM32="/drone/src/gcc32/bin/arm-eabi-"
 fi
+
+${DTB}/dtbToolCM -2 -o $(pwd)/out/arch/arm64/boot/dtb -s 2048 -p $(pwd)/out/scripts/dtc/ $(pwd)/out/arch/arm64/boot/dts/qcom/
+
 END=$(date +"%s")
 DIFF=$(( END - START))
 
-cp $(pwd)/out/arch/arm64/boot/Image.gz-dtb $(pwd)/anykernel
+cp $(pwd)/out/arch/arm64/boot/Image.gz $(pwd)/anykernel/treble-unsupported/
+cp $(pwd)/out/arch/arm64/boot/dtb $(pwd)/anykernel/treble-unsupported/
 
 # POST ZIP OR FAILURE
 cd anykernel
@@ -77,5 +82,6 @@ else
 	exit 1;
 fi
 
-rm -rf ${ZIPNAME} && rm -rf Image.gz-dtb
+rm -rf ${ZIPNAME} && rm -rf treble-unsupported
+
 
