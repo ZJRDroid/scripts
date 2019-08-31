@@ -8,6 +8,8 @@ if [[ "$@" =~ "clang"* ]]; then
 	export COMPILER="Clang 9.0.5"
 elif [[ "$@" =~ "dragon"* ]]; then
         export COMPILER="DragonTC-10.0"
+elif [[ "$@" =~ "gcc9"* ]]; then
+        export COMPILER="GCC 9.2.0"
 else
 	export COMPILER="GCC 9.1 bare-metal"
 fi
@@ -52,6 +54,8 @@ if [[ "$@" =~ "clang"* ]]; then
 elif [[ "$@" =~ "dragon"* ]]; then
 	PATH="/drone/src/dragontc/bin:${PATH}"
 	make -j${KEBABS} O=out ARCH=arm64 CROSS_COMPILE="/drone/src/dragontc/bin/aarch64-linux-gnu-" CROSS_COMPILE_ARM32="/drone/src/dragontc/bin/arm-linux-gnueabi-"
+elif [[ "$@" =~ "gcc9"* ]]; then
+        make -j${KEBABS} O=out ARCH=arm64 CROSS_COMPILE="/drone/src/gcc/bin/aarch64-elf-"
 else
 	make -j${KEBABS} O=out ARCH=arm64 CROSS_COMPILE="/drone/src/gcc/bin/aarch64-elf-" CROSS_COMPILE_ARM32="/drone/src/gcc32/bin/arm-eabi-"
 fi
