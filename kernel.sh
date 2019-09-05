@@ -63,10 +63,7 @@ END=$(date +"%s")
 DIFF=$(( END - START))
 
 cp $(pwd)/out/arch/arm64/boot/Image.gz $(pwd)/anykernel
-cp $(pwd)/out/arch/arm64/boot/dts/qcom/sm8150.dtb $(pwd)/anykernel/dtbs
-cp $(pwd)/out/arch/arm64/boot/dts/qcom/sm8150p.dtb $(pwd)/anykernel/dtbs
 cp $(pwd)/out/arch/arm64/boot/dts/qcom/sm8150-v2.dtb $(pwd)/anykernel/dtbs
-cp $(pwd)/out/arch/arm64/boot/dts/qcom/sm8150p-v2.dtb $(pwd)/anykernel/dtbs
 
 # POST ZIP OR FAILURE
 cd anykernel
@@ -81,5 +78,5 @@ else
 	exit 1;
 fi
 
-rm -rf ${ZIPNAME} && rm -rf Image.gz-dtb
+rm -rf ${ZIPNAME} && rm -rf Image.gz
 
