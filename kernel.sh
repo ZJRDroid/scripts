@@ -11,7 +11,7 @@ elif [[ "$@" =~ "dragon"* ]]; then
 elif [[ "$@" =~ "gcc9"* ]]; then
         export COMPILER="Bare Metal GCC-9.2.0"
 else
-	export COMPILER="GCC 10.0"
+	export COMPILER="Bare Metal GCC 10.0"
 fi
 
 # Export correct version
@@ -57,7 +57,7 @@ elif [[ "$@" =~ "dragon"* ]]; then
 elif [[ "$@" =~ "gcc9"* ]]; then
         make -j${KEBABS} O=out ARCH=arm64 CROSS_COMPILE="/drone/src/gcc/bin/aarch64-elf-" CROSS_COMPILE_ARM32="/drone/src/gcc32/bin/arm-eabi-"
 else
-	make -j${KEBABS} O=out ARCH=arm64 CROSS_COMPILE="/drone/src/gcc/bin/aarch64-linux-gnu-" CROSS_COMPILE_ARM32="/drone/src/gcc32/bin/arm-maestro-linux-gnueabi-"
+	make -j${KEBABS} O=out ARCH=arm64 CROSS_COMPILE="/drone/src/gcc/bin/aarch64-raphiel-elf-" CROSS_COMPILE_ARM32="/drone/src/gcc32/bin/arm-eabi-"
 fi
 END=$(date +"%s")
 DIFF=$(( END - START))
