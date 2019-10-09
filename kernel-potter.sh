@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# We're building IMMENSITY.
+# We're building CLARITY.
 cd ..
 
 # Export compiler type
@@ -17,12 +17,12 @@ fi
 # Export correct version
 if [[ "$@" =~ "beta"* ]]; then
 	export TYPE=beta
-	export VERSION="IMMENSITY-BETA-${DRONE_BUILD_NUMBER}-${RELEASE_CODENAME}"
+	export VERSION="CLARITY-BETA-${DRONE_BUILD_NUMBER}-${RELEASE_CODENAME}"
 	export INC="$(echo ${RC} | grep -o -E '[0-9]+')"
 	INC="$((INC + 1))"
 else
 	export TYPE=stable
-	export VERSION="IMMENSITY-STABLE-${RELEASE_CODENAME}"
+	export VERSION="CLARITY-STABLE-${RELEASE_CODENAME}"
 fi
 
 export ZIPNAME="${VERSION}.zip"
@@ -35,14 +35,13 @@ if [[ -z "${KEBABS}" ]]; then
 fi
 
 # Post to CI channel
-curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/SendAnimation -d animation=https://thumbs.gfycat.com/TidyOccasionalIncatern-size_restricted.gif -d chat_id=${CI_CHANNEL_ID}
-curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Kernel: <code>IMMENSITY Kernel</code>
+curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Kernel: <code>Clarity Kernel</code>
 Type: <code>${TYPE}</code>
 Device: <code>Motorola Moto G5 Plus (potter)</code>
 Compiler: <code>${COMPILER}</code>
 Branch: <code>$(git rev-parse --abbrev-ref HEAD)</code>
 <i>Build started on Drone Cloud...</i>
-Check the build status here: https://cloud.drone.io/UtsavisGreat/immensity_kernel_motorola_msm8953/${DRONE_BUILD_NUMBER}" -d chat_id=${CI_CHANNEL_ID} -d parse_mode=HTML
+Check the build status here: https://cloud.drone.io/ZJRDroid/clarity_kernel_motorola_msm8953/${DRONE_BUILD_NUMBER}" -d chat_id=${CI_CHANNEL_ID} -d parse_mode=HTML
 curl -s -X POST https://api.telegram.org/bot${BOT_API_KEY}/sendMessage -d text="Build started for revision ${DRONE_BUILD_NUMBER}" -d chat_id=${CI_CHANNEL_ID} -d parse_mode=HTML
 
 # Make is shit so I have to pass thru some toolchains
